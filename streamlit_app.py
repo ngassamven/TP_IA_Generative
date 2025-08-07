@@ -2,9 +2,6 @@ import streamlit as st
 import requests
 import datetime
 
-# from exception.exceptions import TradingBotException
-import sys
-
 BASE_URL = "http://localhost:8000"  # Backend endpoint
 
 st.set_page_config(
@@ -30,8 +27,6 @@ with st.form(key="query_form", clear_on_submit=True):
 
 if submit_button and user_input.strip():
     try:
-        # # Show user message
-        # Show thinking spinner while backend processes
         with st.spinner("Bot is thinking..."):
             payload = {"question": user_input}
             response = requests.post(f"{BASE_URL}/query", json=payload)
@@ -53,7 +48,8 @@ if submit_button and user_input.strip():
             """
             st.markdown(markdown_content)
         else:
-            st.error(" Bot failed to respond: " + response.text)
+            st.error("Bot failed to respond: " + response.text)
 
     except Exception as e:
-        raise f"The response failed due to {e}"
+        st.error(f"An error occurred: {e}")
+        # raise Exception(f"The response failed due to: {e}")  # Optionnel si tu veux interrompre
